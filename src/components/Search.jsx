@@ -1,4 +1,6 @@
 import React from "react";
+import RadioBtn from "./RadioBtn";
+import { RadioButtonsData } from "../dict";
 
 export default class Search extends React.Component {
   constructor(props) {
@@ -13,15 +15,11 @@ export default class Search extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  handleFilter = (e) => {
-    const { searchStr, type } = this.state;
+  handleFilter = (value) => {
     this.setState(
-      () => ({ type: e.target.value }),
+      () => ({ type: value }),
       () => {
-        // console.log("handleSearch", searchStr, type);
-        // console.log("handleSearch", this.state.searchStr, this.state.type);
         this.props.handleSearch(this.state.searchStr, this.state.type);
-        // this.props.handleSearch(searchStr, type);
       }
     );
   };
@@ -47,47 +45,16 @@ export default class Search extends React.Component {
           type="text"
         />
         <div className="row">
-          <div className="col s4">
-            <label>
-              <input
-                name="type"
-                type="radio"
-                checked={type === "all"}
-                disabled={!searchStr}
-                value="all"
-                onChange={this.handleFilter}
-              />
-              <span>All</span>
-            </label>
-          </div>
-          <div className="col s4">
-            <label>
-              <input
-                name="type"
-                type="radio"
-                checked={type === "movie"}
-                disabled={!searchStr}
-                value="movie"
-                onChange={this.handleFilter}
-              />
-              <span>Movies only</span>
-            </label>
-          </div>
-          <div className="col s4">
-            <label>
-              <input
-                name="type"
-                type="radio"
-                checked={type === "series"}
-                disabled={!searchStr}
-                value="series"
-                onChange={this.handleFilter}
-              />
-              <span>Series only</span>
-            </label>
-          </div>
+          {RadioButtonsData.map((btn) => (
+            <RadioBtn
+              key={btn.id}
+              checked={type === btn.typeProp}
+              disabled={!searchStr}
+              handleFilter={this.handleFilter}
+              {...btn}
+            />
+          ))}
         </div>
-
         <button
           onClick={() => this.props.handleSearch(searchStr, type)}
           className="btn search-btn"
