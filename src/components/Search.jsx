@@ -1,5 +1,4 @@
 import React from "react";
-import RadioBtn from "./RadioBtn";
 
 export default class Search extends React.Component {
   constructor(props) {
@@ -14,11 +13,15 @@ export default class Search extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  handleFilter = (value) => {
+  handleFilter = (e) => {
+    const { searchStr, type } = this.state;
     this.setState(
-      () => ({ type: value }),
+      () => ({ type: e.target.value }),
       () => {
-        // console.log(this.state);
+        // console.log("handleSearch", searchStr, type);
+        // console.log("handleSearch", this.state.searchStr, this.state.type);
+        this.props.handleSearch(this.state.searchStr, this.state.type);
+        // this.props.handleSearch(searchStr, type);
       }
     );
   };
@@ -29,42 +32,6 @@ export default class Search extends React.Component {
       this.props.handleSearch(searchStr, type);
     }
   };
-
-  // getChecked = (radioBtn) => {
-  //   console.log(this.state.type, radioBtn.typeProp)
-  //   return true
-  // }
-
-  RadioButtonsData = [
-    {
-      id: "1",
-      // name: "type",
-      typeProp: "all",
-      value: "all",
-      text: "All",
-    },
-    {
-      id: "2",
-      // name: "type",
-      typeProp: "movie",
-      value: "movie",
-      text: "Movies only",
-    },
-    {
-      id: "3",
-      // name: "type",
-      typeProp: "series",
-      value: "series",
-      text: "Series only",
-    },
-    {
-      id: "4",
-      // name: "type",
-      typeProp: "game",
-      value: "game",
-      text: "Games only",
-    },
-  ];
 
   render() {
     const { searchStr, type } = this.state;
@@ -80,7 +47,7 @@ export default class Search extends React.Component {
           type="text"
         />
         <div className="row">
-          {/* <div className="col s4">
+          <div className="col s4">
             <label>
               <input
                 name="type"
@@ -109,7 +76,6 @@ export default class Search extends React.Component {
           <div className="col s4">
             <label>
               <input
-                className="with-gap"
                 name="type"
                 type="radio"
                 checked={type === "series"}
@@ -119,24 +85,11 @@ export default class Search extends React.Component {
               />
               <span>Series only</span>
             </label>
-          </div> */}
-          {this.RadioButtonsData.map((radioBtn) => (
-            <RadioBtn
-              key={radioBtn.id}
-              // checked={this.getChecked(radioBtn)}
-              // checked={this.type === radioBtn.typeProp}
-              // disabled={!searchStr}
-              handleFilter={this.handleFilter}
-              {...radioBtn}
-            />
-          ))}
+          </div>
         </div>
 
         <button
-          onClick={() => 
-            console.log("type", type)
-            // this.props.handleSearch(searchStr, type)
-          }
+          onClick={() => this.props.handleSearch(searchStr, type)}
           className="btn search-btn"
           disabled={!searchStr}
         >

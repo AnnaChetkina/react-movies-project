@@ -41,4 +41,3 @@ export default class Main extends React.Component {
   }
 }
 
-//todo del console.log, roll back to the working version, create repo, git commit
